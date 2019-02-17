@@ -14,10 +14,10 @@ class Map {
     });
   }
 
-  render(ctx, startTileRow, startTileCol, x, y) {
+  render(ctx, startTileCol, startTileRow, x, y) {
     let tilemap = this.tilemaps[this.map.tilemap_key];
-    let currX = this.colToX(startTileCol);
-    let currY = this.rowToY(startTileRow);
+    let currX = x;
+    let currY = y;
     let tile_width = 16;
     let tile_height = 16;
 
@@ -26,16 +26,8 @@ class Map {
         tilemap.renderTile(ctx, this.map.data[r][c], currX, currY);
       }
 
-      currX = this.colToX(startTileCol);
+      currX = x;
       currY += tile_height;
     }
-  }
-
-  colToX(col) {
-    return col * 16;
-  }
-
-  rowToY(row) {
-    return row * 16;
   }
 }
