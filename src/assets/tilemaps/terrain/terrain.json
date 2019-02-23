@@ -112,5 +112,119 @@
     "starty": 95,
     "width": 16,
     "height": 16
+  },
+  "19": {
+    "startx": 16,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "20": {
+    "startx": 32,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "21": {
+    "startx": 48,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "22": {
+    "startx": 64,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "23": {
+    "startx": 80,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "24": {
+    "startx": 96,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "25": {
+    "startx": 112,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "26": {
+    "startx": 128,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "27": {
+    "startx": 144,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "28": {
+    "startx": 160,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "29": {
+    "startx": 176,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "30": {
+    "startx": 192,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "31": {
+    "startx": 208,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "32": {
+    "startx": 224,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "33": {
+    "startx": 240,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "34": {
+    "startx": 256,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "35": {
+    "startx": 272,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "36": {
+    "startx": 288,
+    "starty": 32,
+    "width": 16,
+    "height": 16
+  },
+  "37": {
+    "startx": 304,
+    "starty": 32,
+    "width": 16,
+    "height": 16
   }
 }

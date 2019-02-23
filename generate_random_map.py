@@ -9,7 +9,7 @@ tiles = []
 for r in range(0, num_of_rows):
   row = []
   for c in range(0, tiles_per_row):
-    row.append(random_tile_key(18))
+    row.append(random_tile_key(37))
   tiles.append(row)
 
 tiles_string = []

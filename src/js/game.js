@@ -5,6 +5,7 @@ class RpgGame {
      this.preloadFn = () => { };
      this.tilemaps = {};
      this.maps = {};
+     this.animations = {};
 
      this.keys = {};
      this.keyHandlers = {};
@@ -49,6 +50,10 @@ class RpgGame {
 
    addMap(key, mapPath) {
      this.maps[key] = new Map(mapPath, this.tilemaps);
+   }
+
+   addAnimation(key, animationTiles) {
+     this.animations[key] = new Animation(animationTiles);
    }
 
    addKeyHandler(keyCode, handlerFn) {
@@ -109,7 +114,6 @@ class RpgGame {
        window.requestAnimationFrame(gameloop);
      }
 
-     this.preloadFn();
-     setTimeout(gameloop, 2000);
+     setTimeout(() => { this.preloadFn(this); gameloop() }, 2000);
    }
 }
