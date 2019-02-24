@@ -2,7 +2,12 @@ class Animation {
   constructor(animTiles) {
     this.tiles = animTiles;
     this.frameIdx = 0;
+    this.frameTickFn = () => {};
     this.intervalId = null;
+  }
+
+  setFrameTickFn(frameTickFn) {
+    this.frameTickFn = frameTickFn;
   }
 
   play(fps) {
@@ -12,6 +17,8 @@ class Animation {
     let period = 1000 / fps;
     this.intervalId = window.setInterval(() => {
       this.frameIdx += 1
+
+      this.frameTickFn();
 
       if (this.frameIdx >= this.tiles.length) {
         this.stop();
@@ -27,6 +34,7 @@ class Animation {
     let period = 1000 / fps;
     this.intervalId = window.setInterval(() => {
       this.frameIdx = (this.frameIdx + 1) % this.tiles.length;
+      this.frameTickFn();
     }, period);
   }
 

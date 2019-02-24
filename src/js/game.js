@@ -18,8 +18,8 @@ class RpgGame {
      this.tile_height = 16;
      this.screen_width_in_tiles = canvas.width / this.tile_width;
      this.screen_height_in_tiles = canvas.height / this.tile_height;
-     this.mapStartCol = 0;
-     this.mapStartRow = 0;
+
+     this.map = null;
 
      let _this = this;
      document.onkeydown = () => {
@@ -40,12 +40,10 @@ class RpgGame {
      this.keys[e.keyCode] = false;
    }
 
-   setMapRenderRow(newRow) {
-     this.mapStartRow = newRow;
-   }
-
-   setMapRenderCol(newCol) {
-     this.mapStartCol = newCol;
+   setMap(mapKey, startRow, startCol) {
+     this.map = this.maps[mapKey];
+     this.map.row = startRow;
+     this.map.col = startCol;
    }
 
    addTilemap(key, imgKey, jsonKey) {

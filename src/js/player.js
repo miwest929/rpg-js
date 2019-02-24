@@ -9,49 +9,57 @@ class Player {
     this.y = initialY;
 
     this.upAnimation = game.getAnimation("playerMoveUp");
+    let _this = this;
+    this.upAnimation.setFrameTickFn(() => { _this.y -= 4; });
+
     this.downAnimation = game.getAnimation("playerMoveDown");
+    this.downAnimation.setFrameTickFn(() => { _this.y += 4; });
+
     this.leftAnimation = game.getAnimation("playerMoveLeft");
+    this.leftAnimation.setFrameTickFn(() => { _this.x -= 4; });
+
     this.rightAnimation = game.getAnimation("playerMoveRight");
+    this.rightAnimation.setFrameTickFn(() => { _this.x += 4; });
 
     this.direction = FACING_LEFT;
     this.animation = this.leftAnimation;
   }
 
-  onKeyUpArrow() {
+  onKeyUpArrow(game) {
     if (this.direction != FACING_UP) {
       this.direction = FACING_UP;
       this.animation = this.upAnimation;
-      this.animation.playLoop(10);
     }
+    this.animation.play(20);
   }
 
-  onKeyDownArrow() {
+  onKeyDownArrow(game) {
     if (this.direction != FACING_DOWN) {
       this.direction = FACING_DOWN;
       this.animation = this.downAnimation;
-      this.animation.playLoop(10);
     }
+    this.animation.play(20);
   }
 
   onKeyLeftArrow() {
     if (this.direction != FACING_LEFT) {
       this.direction = FACING_LEFT;
       this.animation = this.leftAnimation;
-      this.animation.playLoop(10);
     }
+    this.animation.play(20);
   }
 
   onKeyRightArrow() {
     if (this.direction != FACING_RIGHT) {
       this.direction = FACING_RIGHT;
       this.animation = this.rightAnimation;
-      this.animation.playLoop(10);
     }
+    this.animation.play(20);
   }
 
-  render(game) {
+  render(ctx) {
     if (this.animation) {
-      this.animation.render(game.context, this.x, this.y);
+      this.animation.render(ctx, this.x, this.y);
     }
   }
 }

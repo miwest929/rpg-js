@@ -21,47 +21,31 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addMap('town', 'town_map.json');
 
   game.addKeyHandler(LEFT_KEY, (game) => {
-    let currMapCol = game.mapStartCol;
-    if (currMapCol > 0) {
-      currMapCol--;
-    }
-    game.setMapRenderCol(currMapCol);
-
-    player.onKeyLeftArrow();
+    player.onKeyLeftArrow(game);
+    //game.map.left();
   });
 
   game.addKeyHandler(RIGHT_KEY, (game) => {
-    let currMapCol = game.mapStartCol;
-    currMapCol++;
-    game.setMapRenderCol(currMapCol);
-
-    player.onKeyRightArrow();
+    player.onKeyRightArrow(game);
+    //game.map.right();
   });
 
   game.addKeyHandler(UP_KEY, (game) => {
-    let currMapRow = game.mapStartRow;
-    if (currMapRow > 0) {
-      currMapRow--;
-    }
-    game.setMapRenderRow(currMapRow);
-
-    player.onKeyUpArrow();
+    player.onKeyUpArrow(game);
+    //game.map.up();
   });
 
   game.addKeyHandler(DOWN_KEY, (game) => {
-    let currMapRow = game.mapStartRow;
-    currMapRow++;
-    game.setMapRenderRow(currMapRow);
-
-    player.onKeyDownArrow();
+    player.onKeyDownArrow(game);
+    //game.map.down();
   });
 
   game.setRenderFn((ctx, game) => {
     ctx.fillStyle = "rgb(175, 175, 175)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    game.renderMapAt("town", 0, 0);
-    player.render(game)
+    game.map.render(ctx);
+    player.render(ctx);
   });
 
   let t = game.tilemaps["player"].tiles;
@@ -71,6 +55,7 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addAnimation("playerMoveRight", [t["12"], t["13"], t["14"], t["15"]]);
 
   player = new Player(game, 700, 250);
+  game.setMap("town", 0, 0);
 
   game.startGameLoop();
 });
