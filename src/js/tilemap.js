@@ -7,52 +7,36 @@ class Tile {
     this.height = tileConfig.height;
   }
 
-  render(ctx, x, y) {
+  render(ctx, x, y, zoom) {
     ctx.drawImage(this.img,
       this.startx, this.starty,
       this.width, this.height,
       x, y,
-      this.width, this.height
+      this.width * 2, this.height * 2
     );
   }
 }
 
 class TileMap {
-  constructor(imgPath, jsonPath) {
-    this.loaded = false;
-    this.tiles = {};
-
-    this.img = this.loadImg(imgPath);
-    this.loadJson(jsonPath);
+  constructor(img, json) {
+    this.img = img;
+    this.tiles = this.parseJson(json);
   }
 
   renderTile(ctx, tileKey, x, y) {
     let tile = this.tiles[tileKey];
     if (tile) {
-      tile.render(ctx, x, y);
+      tile.render(ctx, x, y, 1.5);
     } else {
       console.log(`Tile with key = ${tileKey} does not exist in tilemap`);
     }
   }
 
-  loadImg(path) {
-    let img = new Image();
-    img.onload = () => {
-      this.loaded = true;
-      console.log("img = " + img.src + " finished loading");
-    };
-    img.src = path;
-    return img;
-  }
-
-  loadJson(path) {
-    $.getJSON(path, (json) => {
-      console.log("tm.json = " + path + " finished loading");
-
-      this.tiles = {};
-      for (let tileKey in json) {
-        this.tiles[tileKey] = new Tile(this.img, json[tileKey]);
-      }
-    });
+  parseJson(json) {
+    let tiles = {};
+    for (let tileKey in json) {
+      tiles[tileKey] = new Tile(this.img, json[tileKey]);
+    }
+    return tiles;
   }
 }

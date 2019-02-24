@@ -2,7 +2,11 @@ class RpgGame {
    constructor(canvas) {
      this.context = canvas.getContext('2d');
      this.renderFn = () => { console.log("render function not defined"); }
-     this.preloadFn = () => { };
+     this.preloadFn = () => {};
+     this.loadingFn = () => {};
+
+     this.assetManager = new AssetManager();
+
      this.tilemaps = {};
      this.maps = {};
      this.animations = {};
@@ -44,16 +48,23 @@ class RpgGame {
      this.mapStartCol = newCol;
    }
 
-   addTilemap(key, tilemapImg, tilemapConfig) {
-     this.tilemaps[key] = new TileMap(tilemapImg, tilemapConfig);
+   addTilemap(key, imgKey, jsonKey) {
+     let img = this.assetManager.getImg(imgKey);
+     let json = this.assetManager.getJson(jsonKey);
+     this.tilemaps[key] = new TileMap(img, json);
    }
 
-   addMap(key, mapPath) {
-     this.maps[key] = new Map(mapPath, this.tilemaps);
+   addMap(key, jsonKey) {
+     let json = this.assetManager.getJson(jsonKey);
+     this.maps[key] = new Map(json, this.tilemaps);
    }
 
    addAnimation(key, animationTiles) {
      this.animations[key] = new Animation(animationTiles);
+   }
+
+   getAnimation(key) {
+     return this.animations[key];
    }
 
    addKeyHandler(keyCode, handlerFn) {
@@ -68,6 +79,10 @@ class RpgGame {
      this.renderFn = renderFn;
    }
 
+   setLoadingFn(loadingFn) {
+     this.loadingFn = loadingFn;
+   }
+
    setPreloadFn(preloadFn) {
      this.preloadFn = preloadFn;
    }
@@ -75,22 +90,6 @@ class RpgGame {
    renderMapAt(mapKey, x, y) {
      let map = this.maps[mapKey];
      map.render(this.context, this.mapStartCol, this.mapStartRow, x, y);
-   }
-
-   isAssetsLoaded() {
-     for (let key in this.tilemaps) {
-       if (!this.tilemaps[key].loaded) {
-         return false;
-       }
-     }
-
-     for (let key in this.maps) {
-       if (!this.maps[key].loaded) {
-         return false;
-       }
-     }
-
-     return true;
    }
 
    handleKeyInput() {
@@ -105,15 +104,13 @@ class RpgGame {
    }
 
    startGameLoop() {
-     // first, wait for all assets to finish loading
-//     while (!this.isAssetsLoaded()) {}
-//     console.log("All assets have finished loading");
      let gameloop = () => {
        this.renderFn(this.context, this);
        this.handleKeyInput();
        window.requestAnimationFrame(gameloop);
      }
 
-     setTimeout(() => { this.preloadFn(this); gameloop() }, 2000);
+     this.preloadFn(this);
+     gameloop();
    }
 }

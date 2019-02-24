@@ -1,17 +1,7 @@
 class Map {
-  constructor(path, tilemaps) {
-    this.loaded = false;
-    this.map = {};
+  constructor(json, tilemaps) {
+    this.map = json;
     this.tilemaps = tilemaps;
-    this.loadJson(path, tilemaps);
-  }
-
-  loadJson(path) {
-    $.getJSON(path, (json) => {
-      this.map = json;
-      this.loaded = true;
-      console.log("json = " + path + " finished loading");
-    });
   }
 
   render(ctx, startTileCol, startTileRow, x, y) {

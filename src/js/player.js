@@ -4,18 +4,23 @@ let FACING_UP = 2;
 let FACING_DOWN = 3;
 
 class Player {
-  constructor(initialX, initialY) {
-    this.direction = FACING_LEFT;
+  constructor(game, initialX, initialY) {
     this.x = initialX;
     this.y = initialY;
 
-    this.animation = null;
+    this.upAnimation = game.getAnimation("playerMoveUp");
+    this.downAnimation = game.getAnimation("playerMoveDown");
+    this.leftAnimation = game.getAnimation("playerMoveLeft");
+    this.rightAnimation = game.getAnimation("playerMoveRight");
+
+    this.direction = FACING_LEFT;
+    this.animation = this.leftAnimation;
   }
 
-  onKeyUpArrow(game) {
+  onKeyUpArrow() {
     if (this.direction != FACING_UP) {
       this.direction = FACING_UP;
-      this.animation = game.animations["playerMoveUp"];
+      this.animation = this.upAnimation;
       this.animation.playLoop(10);
     }
   }
@@ -23,7 +28,7 @@ class Player {
   onKeyDownArrow() {
     if (this.direction != FACING_DOWN) {
       this.direction = FACING_DOWN;
-      this.animation = game.animations["playerMoveDown"];
+      this.animation = this.downAnimation;
       this.animation.playLoop(10);
     }
   }
@@ -31,7 +36,7 @@ class Player {
   onKeyLeftArrow() {
     if (this.direction != FACING_LEFT) {
       this.direction = FACING_LEFT;
-      this.animation = game.animations["playerMoveLeft"];
+      this.animation = this.leftAnimation;
       this.animation.playLoop(10);
     }
   }
@@ -39,7 +44,7 @@ class Player {
   onKeyRightArrow() {
     if (this.direction != FACING_RIGHT) {
       this.direction = FACING_RIGHT;
-      this.animation = game.animations["playerMoveRight"];
+      this.animation = this.rightAnimation;
       this.animation.playLoop(10);
     }
   }
