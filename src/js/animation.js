@@ -10,6 +10,10 @@ class Animation {
     this.frameTickFn = frameTickFn;
   }
 
+  inProgress() {
+    return this.intervalId;
+  }
+
   play(fps) {
     this.stop();
     this.frameIdx = 0;
@@ -41,6 +45,7 @@ class Animation {
   stop() {
     if (this.intervalId) {
       window.clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }
 

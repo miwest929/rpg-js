@@ -3,7 +3,7 @@ class RpgGame {
      this.context = canvas.getContext('2d');
      this.renderFn = () => { console.log("render function not defined"); }
      this.preloadFn = () => {};
-     this.loadingFn = () => {};
+     this.preRenderFn = () => {};
 
      this.assetManager = new AssetManager();
 
@@ -20,6 +20,7 @@ class RpgGame {
      this.screen_height_in_tiles = canvas.height / this.tile_height;
 
      this.map = null;
+     this.camera = new MapCamera(0, 0, this.screen_height_in_tiles, this.screen_width_in_tiles);
 
      let _this = this;
      document.onkeydown = () => {
@@ -77,8 +78,8 @@ class RpgGame {
      this.renderFn = renderFn;
    }
 
-   setLoadingFn(loadingFn) {
-     this.loadingFn = loadingFn;
+   setPreRenderFn(preRenderFn) {
+     this.preRenderFn = preRenderFn;
    }
 
    setPreloadFn(preloadFn) {
@@ -103,6 +104,7 @@ class RpgGame {
 
    startGameLoop() {
      let gameloop = () => {
+       this.preRenderFn();
        this.renderFn(this.context, this);
        this.handleKeyInput();
        window.requestAnimationFrame(gameloop);

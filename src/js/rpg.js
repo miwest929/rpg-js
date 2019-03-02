@@ -8,6 +8,12 @@ UP_KEY = '38';
 RIGHT_KEY = '39';
 DOWN_KEY = '40';
 
+let prevTime = performance.now();
+let computeFps = (currentTime) => {
+  let fpsAsFloat = 1000 / (currentTime - prevTime);
+  return Math.trunc(fpsAsFloat + 0.5);
+};
+
 let game = new RpgGame(canvas);
 game.assetManager.queueImageAsset("http://localhost:8000/src/assets/tilemaps/terrain/terrain.png");
 game.assetManager.queueImageAsset("http://localhost:8000/src/assets/tilemaps/player/player.png");
@@ -20,31 +26,40 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addTilemap('player', 'player.png', 'player.json');
   game.addMap('town', 'town_map.json');
 
-  game.addKeyHandler(LEFT_KEY, (game) => {
+  game.addKeyHandler(LEFT_KEY, () => {
     player.onKeyLeftArrow(game);
     //game.map.left();
   });
 
-  game.addKeyHandler(RIGHT_KEY, (game) => {
+  game.addKeyHandler(RIGHT_KEY, () => {
     player.onKeyRightArrow(game);
     //game.map.right();
   });
 
-  game.addKeyHandler(UP_KEY, (game) => {
+  game.addKeyHandler(UP_KEY, () => {
     player.onKeyUpArrow(game);
     //game.map.up();
   });
 
-  game.addKeyHandler(DOWN_KEY, (game) => {
+  game.addKeyHandler(DOWN_KEY, () => {
     player.onKeyDownArrow(game);
     //game.map.down();
+  });
+
+  game.setPreRenderFn(() => {
+    let currentTime = performance.now();
+    let fps = computeFps(currentTime);
+    prevTime = currentTime;
+
+    let fpsElement = document.getElementById("fps");
+    fpsElement.innerHTML = `Frames Per Second = ${fps}`;
   });
 
   game.setRenderFn((ctx, game) => {
     ctx.fillStyle = "rgb(175, 175, 175)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    game.map.render(ctx);
+    game.map.render(ctx, game.camera);
     player.render(ctx);
   });
 
@@ -59,5 +74,6 @@ game.assetManager.setAssetsLoadedFn(() => {
 
   game.startGameLoop();
 });
+
 
 game.assetManager.loadAssets();
