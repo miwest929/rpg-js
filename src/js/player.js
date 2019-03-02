@@ -8,8 +8,10 @@ class Player {
     this.x = initialX;
     this.y = initialY;
 
-    this.upAnimation = game.getAnimation("playerMoveUp");
+    this.animationFps = 30;
+
     let _this = this;
+    this.upAnimation = game.getAnimation("playerMoveUp");
     this.upAnimation.setFrameTickFn(() => { _this.y -= 4; });
 
     this.downAnimation = game.getAnimation("playerMoveDown");
@@ -30,15 +32,18 @@ class Player {
       this.direction = FACING_UP;
       this.animation = this.upAnimation;
     }
-    this.animation.play(20);
+
+    this.animation.play(this.animationFps);
   }
 
   onKeyDownArrow(game) {
     if (this.direction != FACING_DOWN) {
+      this.direction = FACING_UP;
       this.direction = FACING_DOWN;
       this.animation = this.downAnimation;
     }
-    this.animation.play(20);
+
+    this.animation.play(this.animationFps);
   }
 
   onKeyLeftArrow() {
@@ -46,7 +51,8 @@ class Player {
       this.direction = FACING_LEFT;
       this.animation = this.leftAnimation;
     }
-    this.animation.play(20);
+
+    this.animation.play(this.animationFps);
   }
 
   onKeyRightArrow() {
@@ -54,7 +60,8 @@ class Player {
       this.direction = FACING_RIGHT;
       this.animation = this.rightAnimation;
     }
-    this.animation.play(20);
+
+    this.animation.play(this.animationFps);
   }
 
   render(ctx) {

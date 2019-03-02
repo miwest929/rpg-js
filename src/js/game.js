@@ -4,6 +4,7 @@ class RpgGame {
      this.renderFn = () => { console.log("render function not defined"); }
      this.preloadFn = () => {};
      this.preRenderFn = () => {};
+     this.collisionFns = []; // array of functions
 
      this.assetManager = new AssetManager();
 
@@ -20,7 +21,7 @@ class RpgGame {
      this.screen_height_in_tiles = canvas.height / this.tile_height;
 
      this.map = null;
-     this.camera = new MapCamera(0, 0, this.screen_height_in_tiles, this.screen_width_in_tiles);
+     this.camera = new MapCamera(0, 0, canvas.height, canvas.width);
 
      let _this = this;
      document.onkeydown = () => {
@@ -102,11 +103,23 @@ class RpgGame {
      }
    }
 
+   addCollisionFn(collisionFn) {
+     this.collisionFns.push(collisionFn);
+   }
+
+   performCollisionDetection() {
+     for (let i = 0; i < this.collisionFns.length; i++) {
+       this.collisionFns[i](this);
+     }
+   }
+
    startGameLoop() {
      let gameloop = () => {
        this.preRenderFn();
        this.renderFn(this.context, this);
        this.handleKeyInput();
+       this.performCollisionDetection();
+
        window.requestAnimationFrame(gameloop);
      }
 
