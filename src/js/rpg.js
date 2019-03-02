@@ -15,11 +15,19 @@ let computeFps = (currentTime) => {
 };
 
 let game = new RpgGame(canvas);
-game.assetManager.queueImageAsset("http://localhost:8000/src/assets/tilemaps/terrain/terrain.png");
-game.assetManager.queueImageAsset("http://localhost:8000/src/assets/tilemaps/player/player.png");
-game.assetManager.queueJsonAsset("http://localhost:8000/src/assets/tilemaps/terrain/terrain.json");
-game.assetManager.queueJsonAsset("http://localhost:8000/src/assets/tilemaps/player/player.json");
-game.assetManager.queueJsonAsset("http://localhost:8000/src/assets/maps/town_map.json");
+
+assets = [
+  "/src/assets/tilemaps/terrain/terrain.png",
+  "/src/assets/tilemaps/player/player.png",
+  "/src/assets/tilemaps/outside/outside.png",
+  "/src/assets/tilemaps/terrain/terrain.json",
+  "/src/assets/tilemaps/player/player.json",
+  "/src/assets/tilemaps/outside/outside.json",
+  "/src/assets/maps/town_map.json"
+];
+for (let i = 0; i < assets.length; i++) {
+  game.assetManager.queueAsset(assets[i]);
+}
 
 game.assetManager.setAssetsLoadedFn(() => {
 
@@ -43,9 +51,6 @@ game.assetManager.setAssetsLoadedFn(() => {
     player.onKeyDownArrow(game);
   });
 
-  //game.addCollisionFn(() => { return game.camera.within(player.x, player.y, 2)) }, () => {
-  //  game.camera.scrollLeftBy(1);
-  //});
 
   game.setPreRenderFn(() => {
     let currentTime = performance.now();
@@ -71,6 +76,11 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addAnimation("playerMoveRight", [t["12"], t["13"], t["14"], t["15"]]);
 
   player = new Player(game, 700, 250);
+
+  game.addCollisionFn(() => { return game.camera.withinLeftEdge(player.x, 16) }, () => { game.camera.moveLeftBy(32) });
+  game.addCollisionFn(() => { return game.camera.withinRightEdge(player.x, 16) }, () => { game.camera.moveRightBy(32) });
+  game.addCollisionFn(() => { return game.camera.withinTopEdge(player.y, 16) }, () => { game.camera.moveUpBy(32) });
+  game.addCollisionFn(() => { return game.camera.withinBottomEdge(player.y, 16) }, () => { game.camera.moveDownBy(32) });
 
   game.setMap("town", 0, 0);
 

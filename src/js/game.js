@@ -4,9 +4,9 @@ class RpgGame {
      this.renderFn = () => { console.log("render function not defined"); }
      this.preloadFn = () => {};
      this.preRenderFn = () => {};
-     this.collisionFns = []; // array of functions
+     this.collisionFns = []; // array of dictionaries. Each dict has conditionFn, conclusionFn
 
-     this.assetManager = new AssetManager();
+     this.assetManager = new AssetManager("http://localhost:8000");
 
      this.tilemaps = {};
      this.maps = {};
@@ -103,13 +103,16 @@ class RpgGame {
      }
    }
 
-   addCollisionFn(collisionFn) {
-     this.collisionFns.push(collisionFn);
+   addCollisionFn(conditionFn, collisionFn) {
+     this.collisionFns.push({"conditionFn": conditionFn, "collisionFn": collisionFn});
    }
 
    performCollisionDetection() {
      for (let i = 0; i < this.collisionFns.length; i++) {
-       this.collisionFns[i](this);
+       let collision = this.collisionFns[i];
+       if (collision.conditionFn && collision.conditionFn(this)) {
+         collision.collisionFn(this);
+       }
      }
    }
 

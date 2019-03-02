@@ -21,6 +21,16 @@ class AssetManager {
     this.assetsLoadedFn = loadedFn;
   }
 
+  queueAsset(path) {
+    if (path.endsWith(".json")) {
+      this.queueJsonAsset(path);
+    } else if (path.endsWith(".png")) {
+      this.queueImageAsset(path);
+    } else {
+      console.error(`Error. Asset manager does not recognize file type of ${path}`);
+    }
+  }
+
   queueImageAsset(path) {
     this.queuedImages.push(path);
   }

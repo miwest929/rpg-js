@@ -2,8 +2,44 @@ class MapCamera {
   constructor(positionY, positionX, fovHeight, fovWidth) {
     this.positionY = positionY;
     this.positionX = positionX;
-    this.fovWidth = fovWidth;
     this.fovHeight = fovHeight;
+    this.fovWidth = fovWidth;
+  }
+
+  moveLeftBy(leftOffset) {
+    if (this.positionX >= leftOffset) {
+      this.positionX -= leftOffset;
+    }
+  }
+
+  moveRightBy(rightOffset) {
+    this.positionX += rightOffset;
+  }
+
+  moveUpBy(upOffset) {
+    if (this.positionY >= upOffset) {
+      this.positionY -= upOffset;
+    }
+  }
+
+  moveDownBy(downOffset) {
+    this.positionY += downOffset;
+  }
+
+  withinLeftEdge(x, padding) {
+    return x - padding < 0;
+  }
+
+  withinRightEdge(x, padding) {
+    return x + padding >= (this.positionX + this.fovWidth);
+  }
+
+  withinTopEdge(y, padding) {
+    return y - padding < 0;
+  }
+
+  withinBottomEdge(y, padding) {
+    return y + padding >= (this.positionY + this.fovHeight);
   }
 
   fromXtoCol(value, tileWidth) {
