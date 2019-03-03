@@ -14,7 +14,7 @@ for r in range(0, num_of_rows):
 
 tiles_string = []
 for tile in tiles:
-    tiles_string.append('[' + '"{0}"'.format('", "'.join(tile)) + ']')
+    tiles_string.append('[' + '{0}'.format(', '.join(tile)) + ']')
 all_tiles_string = "[" + ",".join(tiles_string) + "]"
 
 print "{"

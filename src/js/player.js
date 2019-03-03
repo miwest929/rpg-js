@@ -8,7 +8,7 @@ class Player {
     this.x = initialX;
     this.y = initialY;
 
-    this.animationFps = 30;
+    this.animationFps = 10;
 
     let _this = this;
     this.upAnimation = game.getAnimation("playerMoveUp");
