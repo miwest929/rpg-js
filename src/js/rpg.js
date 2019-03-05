@@ -23,7 +23,8 @@ assets = [
   "/src/assets/tilemaps/terrain/terrain.json",
   "/src/assets/tilemaps/player/player.json",
   "/src/assets/tilemaps/outside/outside.json",
-  "/src/assets/maps/town_map.json"
+  "/src/assets/maps/overworld/overworld_base.json",
+  "/src/assets/maps/overworld/overworld_layer1.json"
 ];
 for (let i = 0; i < assets.length; i++) {
   game.assetManager.queueAsset(assets[i]);
@@ -33,7 +34,10 @@ game.assetManager.setAssetsLoadedFn(() => {
 
   game.addTilemap('terrain', 'terrain.png', 'terrain.json');
   game.addTilemap('player', 'player.png', 'player.json');
-  game.addMap('town', 'town_map.json');
+  game.addTilemap('outside', 'outside.png', 'outside.json');
+
+  game.addMap('overworld', 'overworld_base.json');
+  game.addLayerToMap('overworld', 'overworld_layer1.json');
 
   game.addKeyHandler(LEFT_KEY, () => {
     player.onKeyLeftArrow(game);
@@ -82,7 +86,7 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addCollisionFn(() => { return game.camera.withinTopEdge(player.y, 16) }, () => { game.camera.moveUpBy(32) });
   game.addCollisionFn(() => { return game.camera.withinBottomEdge(player.y, 16) }, () => { game.camera.moveDownBy(32) });
 
-  game.setMap("town", 0, 0);
+  game.setMap("overworld", 0, 0);
 
   game.startGameLoop();
 });

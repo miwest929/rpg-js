@@ -50,6 +50,14 @@ class MapCamera {
     return value / tileHeight;
   }
 
+  fromColToX(value, tileWidth) {
+    return value * tileWidth;
+  }
+
+  fromRowToY(value, tileHeight) {
+    return value * tileHeight;
+  }
+
   startingCol(tileWidth) {
     return this.fromXtoCol(this.positionX, tileWidth);
   }
@@ -70,6 +78,7 @@ class MapCamera {
 class Map {
   constructor(json, tilemaps) {
     this.map = json;
+    this.layers = [];
     this.row = 0;
     this.col = 0;
     this.tilemaps = tilemaps;
@@ -92,5 +101,27 @@ class Map {
       currX = 0;
       currY += tile_height;
     }
+
+    // render the remaining layers
+    for (let i = 0; i < this.layers.length; i++) {
+      this.renderLayer(ctx, camera, this.layers[i]);
+    }
+  }
+
+  renderLayer(ctx, camera, layer) {
+    let tilemap = this.tilemaps[layer.tilemap_key];
+
+    for (let i = 0; i < layer.data.length; i++) {
+      let tileId = layer.data[i][0];
+      let row = layer.data[i][1];
+      let col = layer.data[i][2];
+      let x = camera.fromColToX(col, 16);
+      let y = camera.fromRowToY(row, 16);
+      tilemap.renderTile(ctx, tileId, x, y);
+    }
+  }
+
+  addLayer(layer) {
+    this.layers.push(layer);
   }
 }

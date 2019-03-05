@@ -1,0 +1,5 @@
+{
+  "tilemap_key": "outside",
+  "type": "overlay",
+  "data": [[0, 10, 20]]
+}

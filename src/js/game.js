@@ -57,6 +57,16 @@ class RpgGame {
    addMap(key, jsonKey) {
      let json = this.assetManager.getJson(jsonKey);
      this.maps[key] = new Map(json, this.tilemaps);
+
+     return this.maps[key];
+   }
+
+   addLayerToMap(key, jsonKey) {
+     let json = this.assetManager.getJson(jsonKey);
+     let map = this.maps[key];
+     map.addLayer(json);
+
+     return map;
    }
 
    addAnimation(key, animationTiles) {
