@@ -28,42 +28,29 @@ class Player {
   }
 
   onKeyUpArrow(game) {
-    if (this.direction != FACING_UP) {
-      this.direction = FACING_UP;
-      this.animation = this.upAnimation;
-    }
-
-    if (!this.animation.inProgress()) {
-      this.animation.play(this.animationFps);
-    }
+    this.move(FACING_UP, this.upAnimation);
   }
 
   onKeyDownArrow(game) {
-    if (this.direction != FACING_DOWN) {
-      this.direction = FACING_DOWN;
-      this.animation = this.downAnimation;
-    }
-
-    if (!this.animation.inProgress()) {
-      this.animation.play(this.animationFps);
-    }
+    this.move(FACING_DOWN, this.downAnimation);
   }
 
   onKeyLeftArrow() {
-    if (this.direction != FACING_LEFT) {
-      this.direction = FACING_LEFT;
-      this.animation = this.leftAnimation;
-    }
-
-    if (!this.animation.inProgress()) {
-      this.animation.play(this.animationFps);
-    }
+    this.move(FACING_LEFT, this.leftAnimation);
   }
 
   onKeyRightArrow() {
-    if (this.direction != FACING_RIGHT) {
-      this.direction = FACING_RIGHT;
-      this.animation = this.rightAnimation;
+    this.move(FACING_RIGHT, this.rightAnimation);
+  }
+
+  move(direction, animation) {
+    if (this.animation.inProgress()) {
+      return;
+    }
+
+    if (this.direction != direction) {
+      this.direction = direction;
+      this.animation = animation;
     }
 
     if (!this.animation.inProgress()) {
