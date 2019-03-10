@@ -70,7 +70,7 @@ game.assetManager.setAssetsLoadedFn(() => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     game.map.render(ctx, game.camera);
-    player.render(ctx);
+    player.render(ctx, game.camera);
   });
 
   let t = game.tilemaps["player"].tiles;

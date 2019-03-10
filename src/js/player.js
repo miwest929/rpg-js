@@ -33,17 +33,20 @@ class Player {
       this.animation = this.upAnimation;
     }
 
-    this.animation.play(this.animationFps);
+    if (!this.animation.inProgress()) {
+      this.animation.play(this.animationFps);
+    }
   }
 
   onKeyDownArrow(game) {
     if (this.direction != FACING_DOWN) {
-      this.direction = FACING_UP;
       this.direction = FACING_DOWN;
       this.animation = this.downAnimation;
     }
 
-    this.animation.play(this.animationFps);
+    if (!this.animation.inProgress()) {
+      this.animation.play(this.animationFps);
+    }
   }
 
   onKeyLeftArrow() {
@@ -52,7 +55,9 @@ class Player {
       this.animation = this.leftAnimation;
     }
 
-    this.animation.play(this.animationFps);
+    if (!this.animation.inProgress()) {
+      this.animation.play(this.animationFps);
+    }
   }
 
   onKeyRightArrow() {
@@ -61,10 +66,12 @@ class Player {
       this.animation = this.rightAnimation;
     }
 
-    this.animation.play(this.animationFps);
+    if (!this.animation.inProgress()) {
+      this.animation.play(this.animationFps);
+    }
   }
 
-  render(ctx) {
+  render(ctx, camera) {
     if (this.animation) {
       this.animation.render(ctx, this.x, this.y);
     }

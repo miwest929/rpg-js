@@ -31,7 +31,7 @@ class MapCamera {
   }
 
   withinRightEdge(x, padding) {
-    return x + padding >= (this.positionX + this.fovWidth);
+    return x + this.positionX + padding >= (this.positionX + this.fovWidth);
   }
 
   withinTopEdge(y, padding) {
@@ -39,7 +39,7 @@ class MapCamera {
   }
 
   withinBottomEdge(y, padding) {
-    return y + padding >= (this.positionY + this.fovHeight);
+    return y + this.positionY + padding >= (this.positionY + this.fovHeight);
   }
 
   fromXtoCol(value, tileWidth) {
