@@ -23,6 +23,8 @@ assets = [
   "/src/assets/tilemaps/terrain/terrain.json",
   "/src/assets/tilemaps/player/player.json",
   "/src/assets/tilemaps/outside/outside.json",
+  "/src/assets/tilemaps/house/house.png",
+  "/src/assets/tilemaps/house/house.json",
   "/src/assets/maps/overworld/overworld_base.json",
   "/src/assets/maps/overworld/overworld_layer1.json"
 ];
@@ -35,6 +37,7 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addTilemap('terrain', 'terrain.png', 'terrain.json');
   game.addTilemap('player', 'player.png', 'player.json');
   game.addTilemap('outside', 'outside.png', 'outside.json');
+  game.addTilemap('house', 'house.png', 'house.json');
 
   game.addMap('overworld', 'overworld_base.json');
   game.addLayerToMap('overworld', 'overworld_layer1.json');

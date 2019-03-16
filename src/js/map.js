@@ -109,16 +109,30 @@ class Map {
   }
 
   renderLayer(ctx, camera, layer) {
-    let tilemap = this.tilemaps[layer.tilemap_key];
-
     for (let i = 0; i < layer.data.length; i++) {
-      let tileId = layer.data[i][0];
-      let row = layer.data[i][1];
-      let col = layer.data[i][2];
-      let x = camera.fromColToX(col, 16);
-      let y = camera.fromRowToY(row, 16);
-      tilemap.renderTile(ctx, tileId, x, y);
+      this.renderLayerTile(ctx, camera, layer.data[i][0], layer.data[i][3], layer.data[i][1], layer.data[i][2])
     }
+  }
+
+  renderLayerTile(ctx, camera, tileKey, units, posX, posY) {
+    let res = tileKey.split(":");
+    let tilemap = this.tilemaps[res[0]];
+    let tileId = res[1];
+
+    let x = posX;
+    let y = posY;
+    if (units == "grid") {
+      x = camera.fromColToX(posX, 16);
+      y = camera.fromRowToY(posY, 16);
+    }
+
+    tilemap.renderTile(ctx, tileId, x, y);
+  }
+
+  // Example: "<tilemapKey>:<tileId>"
+  extractTileKey(key) {
+    let res = key.split(":");
+    return this.tilemaps[res[0]][res[1]];
   }
 
   addLayer(layer) {

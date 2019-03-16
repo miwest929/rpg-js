@@ -1,5 +1,4 @@
 {
-  "tilemap_key": "outside",
   "type": "overlay",
-  "data": [[0, 10, 20]]
+  "data": [["outside:0", 10, 20, "grid"],["house:2", 280, 230, "px"], ["house:3", 340, 382, "px"], ["house:4", 297, 344, "px"], ["house:5", 280, 382, "px"]]
 }
