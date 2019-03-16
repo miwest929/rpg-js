@@ -7,6 +7,7 @@ LEFT_KEY = '37';
 UP_KEY = '38';
 RIGHT_KEY = '39';
 DOWN_KEY = '40';
+A_BUTTON = '65';
 
 let prevTime = performance.now();
 let computeFps = (currentTime) => {
@@ -42,22 +43,18 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addMap('overworld', 'overworld_base.json');
   game.addLayerToMap('overworld', 'overworld_layer1.json');
 
-  game.addKeyHandler(LEFT_KEY, () => {
-    player.onKeyLeftArrow(game);
+  game.addKeyHandler(LEFT_KEY, () => { player.moveLeft(); });
+  game.addKeyHandler(RIGHT_KEY, () => { player.moveRight(); });
+  game.addKeyHandler(UP_KEY, () => { player.moveUp(); });
+  game.addKeyHandler(DOWN_KEY, () => { player.moveDown(); });
+
+  game.addKeyHandler(A_BUTTON, () => {
+    player.goRun();
   });
 
-  game.addKeyHandler(RIGHT_KEY, () => {
-    player.onKeyRightArrow(game);
+  game.addOnKeyUpHandler(A_BUTTON, () => {
+    player.goWalk();
   });
-
-  game.addKeyHandler(UP_KEY, () => {
-    player.onKeyUpArrow(game);
-  });
-
-  game.addKeyHandler(DOWN_KEY, () => {
-    player.onKeyDownArrow(game);
-  });
-
 
   game.setPreRenderFn(() => {
     let currentTime = performance.now();

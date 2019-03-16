@@ -12,15 +12,23 @@ class RpgGame {
      this.maps = {};
      this.animations = {};
 
+     // the held-down state for all keys
      this.keys = {};
+
+     // triggered when a key is being held down
      this.keyHandlers = {};
+
+     // triggered when a key press is released
+     this.keyUpHandlers = {};
 
      this.tile_width = 16;
      this.tile_height = 16;
      this.screen_width_in_tiles = canvas.width / this.tile_width;
      this.screen_height_in_tiles = canvas.height / this.tile_height;
 
+     // the current map that should be rendered
      this.map = null;
+
      this.camera = new MapCamera(0, 0, canvas.height, canvas.width);
 
      let _this = this;
@@ -39,7 +47,23 @@ class RpgGame {
 
    processKeyUpEvent(e) {
      e = e || window.event;
+
+     if (this.keys[e.keyCode]) {
+       this.triggerOnKeyUpHandlers(e.keyCode);
+     }
+
      this.keys[e.keyCode] = false;
+   }
+
+   triggerOnKeyUpHandlers(keyCode) {
+     let handlers = this.keyUpHandlers[keyCode] || [];
+     for (let i = 0; i < handlers.length; i++) {
+        handlers[i](this);
+     }
+   }
+
+   addOnKeyUpHandler(keyCode, keyUpFn) {
+     this.keyUpHandlers[keyCode] = keyUpFn;
    }
 
    setMap(mapKey, startRow, startCol) {

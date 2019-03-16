@@ -3,12 +3,15 @@ let FACING_RIGHT  = 1;
 let FACING_UP = 2;
 let FACING_DOWN = 3;
 
+let WALKING_SPEED = 10;
+let RUNNING_SPEED = 20;
+
 class Player {
   constructor(game, initialX, initialY) {
     this.x = initialX;
     this.y = initialY;
 
-    this.animationFps = 10;
+    this.animationFps = WALKING_SPEED;
 
     let _this = this;
     this.upAnimation = game.getAnimation("playerMoveUp");
@@ -27,19 +30,27 @@ class Player {
     this.animation = this.leftAnimation;
   }
 
-  onKeyUpArrow(game) {
-    this.move(FACING_UP, this.upAnimation);
+  goRun() {
+    this.animationFps = RUNNING_SPEED;
   }
 
-  onKeyDownArrow(game) {
+  goWalk() {
+    this.animationFps = WALKING_SPEED;
+  }
+
+  moveDown() {
     this.move(FACING_DOWN, this.downAnimation);
   }
 
-  onKeyLeftArrow() {
+  moveUp() {
+    this.move(FACING_UP, this.upAnimation);
+  }
+
+  moveLeft() {
     this.move(FACING_LEFT, this.leftAnimation);
   }
 
-  onKeyRightArrow() {
+  moveRight() {
     this.move(FACING_RIGHT, this.rightAnimation);
   }
 
