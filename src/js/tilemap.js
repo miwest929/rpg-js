@@ -5,9 +5,11 @@ class Tile {
     this.starty = tileConfig.starty;
     this.width = tileConfig.width;
     this.height = tileConfig.height;
+
+    this.collisions = tileConfig.collisions || [];
   }
 
-  render(ctx, x, y, zoom) {
+  render(ctx, x, y) {
     ctx.drawImage(this.img,
       this.startx, this.starty,
       this.width, this.height,
@@ -17,25 +19,70 @@ class Tile {
   }
 }
 
+class CompositeTile {
+  constructor(srcImg, tileConfig, refTiles) {
+    this.img = srcImg;
+    this.refTiles = refTiles;
+    this.collisions = [];
+    this.tiles = this.parseTiles(tileConfig["tiles"]);
+  }
+
+  render(ctx, x, y) {
+    for (let i = 0; i < this.tiles.length; i++) {
+      let indvTile = this.tiles[i];
+      indvTile[0].render(ctx, indvTile[1] + x, indvTile[2] + y);
+    }
+  }
+
+  parseTiles(tilesJson) {
+    let tiles = [];
+    this.collisions = [];
+    for (let i = 0; i < tilesJson.length; i++) {
+      let tile = this.refTiles[tilesJson[i][0]];
+      tiles.push([
+        tile,
+        tilesJson[i][1],
+        tilesJson[i][2]
+      ]);
+      this.collisions.concat(tile.collisions);
+    }
+    return tiles;
+  }
+}
+
 class TileMap {
   constructor(img, json) {
     this.img = img;
-    this.tiles = this.parseJson(json);
+    this.tiles = this.parseIndividualTiles(json["scalars"]);
+    let composites = this.parseCompositeTiles(json["composites"]);
+    this.tiles = {...this.tiles, ...composites};
   }
 
   renderTile(ctx, tileKey, x, y) {
     let tile = this.tiles[tileKey];
     if (tile) {
-      tile.render(ctx, x, y, 1.5);
+      tile.render(ctx, x, y);
     } else {
       console.log(`Tile with key = ${tileKey} does not exist in tilemap`);
     }
   }
 
-  parseJson(json) {
+  parseIndividualTiles(json) {
     let tiles = {};
     for (let tileKey in json) {
       tiles[tileKey] = new Tile(this.img, json[tileKey]);
+    }
+    return tiles;
+  }
+
+  parseCompositeTiles(json) {
+    if (!json) {
+      return {};
+    }
+
+    let tiles = {};
+    for (let tileKey in json) {
+      tiles[tileKey] = new CompositeTile(this.img, json[tileKey], this.tiles);
     }
     return tiles;
   }

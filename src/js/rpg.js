@@ -43,10 +43,10 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addMap('overworld', 'overworld_base.json');
   game.addLayerToMap('overworld', 'overworld_layer1.json');
 
-  game.addKeyHandler(LEFT_KEY, () => { player.moveLeft(); });
-  game.addKeyHandler(RIGHT_KEY, () => { player.moveRight(); });
-  game.addKeyHandler(UP_KEY, () => { player.moveUp(); });
-  game.addKeyHandler(DOWN_KEY, () => { player.moveDown(); });
+  game.addKeyHandler(LEFT_KEY, () => { player.moveLeft(game); });
+  game.addKeyHandler(RIGHT_KEY, () => { player.moveRight(game); });
+  game.addKeyHandler(UP_KEY, () => { player.moveUp(game); });
+  game.addKeyHandler(DOWN_KEY, () => { player.moveDown(game); });
 
   game.addKeyHandler(A_BUTTON, () => {
     player.goRun();

@@ -1,0 +1,48 @@
+{
+  "scalars": {
+    "0": {
+      "startx": 162,
+      "starty": 16,
+      "width": 44,
+      "height": 16,
+      "collisions": [
+        {"x": 12, "y": 46, "width": 28, "height": 14}
+      ]
+    },
+    "1": {
+      "startx": 162,
+      "starty": 16,
+      "width": 44,
+      "height": 16
+    },
+    "2": {
+      "startx": 306,
+      "starty": 147,
+      "width": 108,
+      "height": 77
+    },
+    "3": {
+      "startx": 64,
+      "starty": 64,
+      "width": 53,
+      "height": 32
+    },
+    "4": {
+      "startx": 18,
+      "starty": 45,
+      "width": 22,
+      "height": 32
+    },
+    "5": {
+      "startx": 40,
+      "starty": 45,
+      "width": 22,
+      "height": 32
+    }
+  },
+  "composites": {
+    "houseone": {
+      "tiles": [[2, 0, 0], [3, 60, 152], [4, 17, 114], [5, 0, 152]]
+    }
+  }
+}

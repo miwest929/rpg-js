@@ -82,6 +82,17 @@ class Map {
     this.row = 0;
     this.col = 0;
     this.tilemaps = tilemaps;
+
+    // tracks which tiles are blocked (can't be collided with)
+    this.collisions = [];
+  }
+
+  fromXtoCol(value, tileWidth) {
+    return value / tileWidth;
+  }
+
+  fromYtoRow(value, tileHeight) {
+    return value / tileHeight;
   }
 
   render(ctx, camera) {
@@ -110,32 +121,48 @@ class Map {
 
   renderLayer(ctx, camera, layer) {
     for (let i = 0; i < layer.data.length; i++) {
-      this.renderLayerTile(ctx, camera, layer.data[i][0], layer.data[i][3], layer.data[i][1], layer.data[i][2])
+      let tileMapKey = layer.data[i]["tilemapkey"];
+      let tileKey = layer.data[i]["tilekey"];
+      let units = layer.data[i]["units"];
+      let x = layer.data[i]["x"];
+      let y = layer.data[i]["y"];
+
+      this.renderLayerTile(ctx, camera, tileMapKey, tileKey, units, x, y);
     }
   }
 
-  renderLayerTile(ctx, camera, tileKey, units, posX, posY) {
-    let res = tileKey.split(":");
-    let tilemap = this.tilemaps[res[0]];
-    let tileId = res[1];
+  renderLayerTile(ctx, camera, tileMapKey, tileKey, units, x, y) {
+    let tilemap = this.tilemaps[tileMapKey];
 
-    let x = posX;
-    let y = posY;
-    if (units == "grid") {
-      x = camera.fromColToX(posX, 16);
-      y = camera.fromRowToY(posY, 16);
+    if (units == "tiles") {
+      x = camera.fromColToX(x, 16);
+      y = camera.fromRowToY(y, 16);
     }
 
-    tilemap.renderTile(ctx, tileId, x, y);
+    tilemap.renderTile(ctx, tileKey, x, y);
   }
 
-  // Example: "<tilemapKey>:<tileId>"
-  extractTileKey(key) {
-    let res = key.split(":");
-    return this.tilemaps[res[0]][res[1]];
+  addCollisions(newCollisions) {
+    for (let i = 0; i < newCollisions.length; i++) {
+      let collision = newCollisions[i];
+      // convert bounding box to set of 16x16 tiles
+      debugger;
+    }
   }
 
   addLayer(layer) {
     this.layers.push(layer);
+    for (let i = 0; i < layer.data.length; i++) {
+      let obj = layer.data[i];
+      let tilemap = this.tilemaps[obj.tilemapkey];
+      let tile = tilemap.tiles[obj.tilekey];
+      this.addCollisions(tile.collisions);
+    }
+  }
+
+  isBlocked(x, y) {
+    let tileX = this.fromXtoCol(x);
+    let tileY = this.fromYtoRow(y);
+
   }
 }

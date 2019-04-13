@@ -1,4 +1,27 @@
 {
   "type": "overlay",
-  "data": [["outside:0", 10, 20, "grid"],["house:2", 280, 230, "px"], ["house:3", 340, 382, "px"], ["house:4", 297, 344, "px"], ["house:5", 280, 382, "px"]]
+  "data": [
+    {
+      "tilemapkey": "outside",
+      "tilekey": 0,
+      "units": "tiles",
+      "x": 10,
+      "y": 20
+    },
+    {
+      "tilemapkey": "house",
+      "tilekey": "houseone",
+      "units": "tiles",
+      "x": 47,
+      "y": 14
+    }
+  ],
+  "events": [
+    {
+      "type": "teleport",
+      "tilex": 10,
+      "tiley": 20,
+      "nextmap": "insidehouse"
+    }
+  ]
 }

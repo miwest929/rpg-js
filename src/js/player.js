@@ -12,6 +12,7 @@ class Player {
     this.y = initialY;
 
     this.animationFps = WALKING_SPEED;
+    this.MOVE_DIST = 16;
 
     let _this = this;
     this.upAnimation = game.getAnimation("playerMoveUp");
@@ -38,20 +39,28 @@ class Player {
     this.animationFps = WALKING_SPEED;
   }
 
-  moveDown() {
-    this.move(FACING_DOWN, this.downAnimation);
+  moveDown(game) {
+    if (!game.isBlocked(this.x, this.y + this.MOVE_DIST)) {
+      this.move(FACING_DOWN, this.downAnimation);
+    }
   }
 
-  moveUp() {
-    this.move(FACING_UP, this.upAnimation);
+  moveUp(game) {
+    if (!game.isBlocked(this.x, this.y - this.MOVE_DIST)) {
+      this.move(FACING_UP, this.upAnimation);
+    }
   }
 
-  moveLeft() {
-    this.move(FACING_LEFT, this.leftAnimation);
+  moveLeft(game) {
+    if (!game.isBlocked(this.x - this.MOVE_DIST, this.y)) {
+      this.move(FACING_LEFT, this.leftAnimation);
+    }
   }
 
-  moveRight() {
-    this.move(FACING_RIGHT, this.rightAnimation);
+  moveRight(game) {
+    if (!game.isBlocked(this.x + this.MOVE_DIST, this.y)) {
+      this.move(FACING_RIGHT, this.rightAnimation);
+    }
   }
 
   move(direction, animation) {

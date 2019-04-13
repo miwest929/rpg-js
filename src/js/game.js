@@ -137,6 +137,10 @@ class RpgGame {
      }
    }
 
+   isBlocked(x, y) {
+     return this.map.isBlocked(x, y);
+   }
+
    addCollisionFn(conditionFn, collisionFn) {
      this.collisionFns.push({"conditionFn": conditionFn, "collisionFn": collisionFn});
    }
