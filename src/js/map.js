@@ -1,3 +1,19 @@
+let fromXtoCol = (value, tileWidth) => {
+  return value / tileWidth;
+}
+
+let fromYtoRow = (value, tileHeight) => {
+  return value / tileHeight;
+}
+
+let fromColToX = (value, tileWidth) => {
+  return value * tileWidth;
+}
+
+let fromRowToY = (value, tileHeight) => {
+  return value * tileHeight;
+}
+
 class MapCamera {
   constructor(positionY, positionX, fovHeight, fovWidth) {
     this.positionY = positionY;
@@ -42,36 +58,22 @@ class MapCamera {
     return y + this.positionY + padding >= (this.positionY + this.fovHeight);
   }
 
-  fromXtoCol(value, tileWidth) {
-    return value / tileWidth;
-  }
 
-  fromYtoRow(value, tileHeight) {
-    return value / tileHeight;
-  }
-
-  fromColToX(value, tileWidth) {
-    return value * tileWidth;
-  }
-
-  fromRowToY(value, tileHeight) {
-    return value * tileHeight;
-  }
 
   startingCol(tileWidth) {
-    return this.fromXtoCol(this.positionX, tileWidth);
+    return fromXtoCol(this.positionX, tileWidth);
   }
 
   startingRow(tileHeight) {
-    return this.fromYtoRow(this.positionY, tileHeight);
+    return fromYtoRow(this.positionY, tileHeight);
   }
 
   screenWidthInCol(tileWidth) {
-    return this.fromXtoCol(this.fovWidth, tileWidth);
+    return fromXtoCol(this.fovWidth, tileWidth);
   }
 
   screenHeightInRow(tileHeight) {
-    return this.fromYtoRow(this.fovHeight, tileHeight);
+    return fromYtoRow(this.fovHeight, tileHeight);
   }
 }
 
@@ -83,16 +85,8 @@ class Map {
     this.col = 0;
     this.tilemaps = tilemaps;
 
-    // tracks which tiles are blocked (can't be collided with)
+    // array of BoundingBox
     this.collisions = [];
-  }
-
-  fromXtoCol(value, tileWidth) {
-    return value / tileWidth;
-  }
-
-  fromYtoRow(value, tileHeight) {
-    return value / tileHeight;
   }
 
   render(ctx, camera) {
@@ -127,27 +121,23 @@ class Map {
       let x = layer.data[i]["x"];
       let y = layer.data[i]["y"];
 
-      this.renderLayerTile(ctx, camera, tileMapKey, tileKey, units, x, y);
+      this.renderLayerTile(ctx, tileMapKey, tileKey, units, x, y);
     }
   }
 
-  renderLayerTile(ctx, camera, tileMapKey, tileKey, units, x, y) {
+  renderLayerTile(ctx, tileMapKey, tileKey, units, x, y) {
     let tilemap = this.tilemaps[tileMapKey];
 
     if (units == "tiles") {
-      x = camera.fromColToX(x, 16);
-      y = camera.fromRowToY(y, 16);
+      x = fromColToX(x, 16);
+      y = fromRowToY(y, 16);
     }
 
     tilemap.renderTile(ctx, tileKey, x, y);
   }
 
-  addCollisions(newCollisions) {
-    for (let i = 0; i < newCollisions.length; i++) {
-      let collision = newCollisions[i];
-      // convert bounding box to set of 16x16 tiles
-      debugger;
-    }
+  addCollisionBoundingBox(bb) {
+    this.collisions.push(bb);
   }
 
   addLayer(layer) {
@@ -156,13 +146,35 @@ class Map {
       let obj = layer.data[i];
       let tilemap = this.tilemaps[obj.tilemapkey];
       let tile = tilemap.tiles[obj.tilekey];
-      this.addCollisions(tile.collisions);
+      if (tile.collision) {
+        let bb = this.makeTileBoundingBox(tile.collision, obj.x, obj.y, obj.units);
+        this.addCollisionBoundingBox(bb);
+      }
     }
   }
 
-  isBlocked(x, y) {
-    let tileX = this.fromXtoCol(x);
-    let tileY = this.fromYtoRow(y);
+  makeTileBoundingBox(tmBb, x, y, units) {
+    if (units == "tiles") {
+      x = fromColToX(x, 16);
+      y = fromRowToY(y, 16);
+    }
 
+    return new BoundingBox(
+      tmBb.x + x, tmBb.y + y, tmBb.width, tmBb.height);
+  }
+
+  // debugging purposes only
+
+  blockingBox(bb) {
+    // check if supplied bounding box intersects with any of
+    // the bounding boxes on the current map
+    for (let i = 0; i < this.collisions.length; i++) {
+      let otherBb = this.collisions[i];
+      if (otherBb.intersects(bb)) {
+        return otherBb;
+      }
+    }
+
+    return null;
   }
 }

@@ -4,7 +4,13 @@
       "startx": 277,
       "starty": 50,
       "width": 52,
-      "height": 60
+      "height": 60,
+      "collision": {
+        "x": 16,
+        "y": 45,
+        "width": 20,
+        "height": 10
+      }
     },
     "1": {
       "startx": 403,

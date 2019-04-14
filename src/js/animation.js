@@ -49,6 +49,10 @@ class Animation {
     }
   }
 
+  getCurTile() {
+    return this.tiles[this.frameIdx];
+  }
+
   render(ctx, x, y) {
     this.tiles[this.frameIdx].render(ctx, x, y);
   }

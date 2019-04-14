@@ -9,13 +9,31 @@ RIGHT_KEY = '39';
 DOWN_KEY = '40';
 A_BUTTON = '65';
 
+let flags = {
+  shouldRenderCollisions: true
+};
+
+let changeResolution = (canvas, scaleFactor) => {
+    // Set up CSS size.
+    canvas.style.width = canvas.style.width || canvas.width + 'px';
+    canvas.style.height = canvas.style.height || canvas.height + 'px';
+
+    // Resize canvas and scale future draws.
+    canvas.width = Math.ceil(canvas.width * scaleFactor);
+    canvas.height = Math.ceil(canvas.height * scaleFactor);
+    var ctx = canvas.getContext('2d');
+    ctx.scale(scaleFactor, scaleFactor);
+}
+
+//changeResolution(canvas, 1);
+
 let prevTime = performance.now();
 let computeFps = (currentTime) => {
   let fpsAsFloat = 1000 / (currentTime - prevTime);
   return Math.trunc(fpsAsFloat + 0.5);
 };
 
-let game = new RpgGame(canvas);
+let game = new RpgGame(canvas, flags);
 
 assets = [
   "/src/assets/tilemaps/terrain/terrain.png",
@@ -43,10 +61,26 @@ game.assetManager.setAssetsLoadedFn(() => {
   game.addMap('overworld', 'overworld_base.json');
   game.addLayerToMap('overworld', 'overworld_layer1.json');
 
-  game.addKeyHandler(LEFT_KEY, () => { player.moveLeft(game); });
-  game.addKeyHandler(RIGHT_KEY, () => { player.moveRight(game); });
-  game.addKeyHandler(UP_KEY, () => { player.moveUp(game); });
-  game.addKeyHandler(DOWN_KEY, () => { player.moveDown(game); });
+  game.addKeyHandler(LEFT_KEY, (FACING_LEFT) => {
+    if (!game.hasCollisionDetected(player.nextBoundingBox())) {
+      player.moveLeft(game);
+    }
+  });
+  game.addKeyHandler(RIGHT_KEY, () => {
+    if (!game.hasCollisionDetected(player.nextBoundingBox(FACING_RIGHT))) {
+      player.moveRight(game);
+    }
+  });
+  game.addKeyHandler(UP_KEY, () => {
+    if (!game.hasCollisionDetected(player.nextBoundingBox(FACING_UP))) {
+      player.moveUp(game);
+    }
+  });
+  game.addKeyHandler(DOWN_KEY, () => {
+    if (!game.hasCollisionDetected(player.nextBoundingBox(FACING_DOWN))) {
+      player.moveDown(game);
+    }
+  });
 
   game.addKeyHandler(A_BUTTON, () => {
     player.goRun();

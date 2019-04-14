@@ -40,27 +40,19 @@ class Player {
   }
 
   moveDown(game) {
-    if (!game.isBlocked(this.x, this.y + this.MOVE_DIST)) {
-      this.move(FACING_DOWN, this.downAnimation);
-    }
+    this.move(FACING_DOWN, this.downAnimation);
   }
 
   moveUp(game) {
-    if (!game.isBlocked(this.x, this.y - this.MOVE_DIST)) {
-      this.move(FACING_UP, this.upAnimation);
-    }
+    this.move(FACING_UP, this.upAnimation);
   }
 
   moveLeft(game) {
-    if (!game.isBlocked(this.x - this.MOVE_DIST, this.y)) {
-      this.move(FACING_LEFT, this.leftAnimation);
-    }
+    this.move(FACING_LEFT, this.leftAnimation);
   }
 
   moveRight(game) {
-    if (!game.isBlocked(this.x + this.MOVE_DIST, this.y)) {
-      this.move(FACING_RIGHT, this.rightAnimation);
-    }
+    this.move(FACING_RIGHT, this.rightAnimation);
   }
 
   move(direction, animation) {
@@ -76,6 +68,32 @@ class Player {
     if (!this.animation.inProgress()) {
       this.animation.play(this.animationFps);
     }
+  }
+
+  nextBoundingBox(direction) {
+    let bb = this.boundingBox();
+
+    let deltaX = 0;
+    let deltaY = 0;
+    if (direction == FACING_LEFT) {
+      deltaX = -16;
+    } else if (direction == FACING_RIGHT) {
+      deltaX = 16;
+    } else if (direction == FACING_DOWN) {
+      deltaY = 16;
+    } else if (direction == FACING_UP) {
+      deltaY = -16;
+    }
+
+    return bb.offsetBy(deltaX, deltaY);
+  }
+
+  boundingBox() {
+    let curTile = this.animation.getCurTile();
+    console.log(`BB(x=${this.x}, y=${this.y}, w=${curTile.width}, h=${curTile.height})`);
+    return new BoundingBox(
+      this.x, this.y, curTile.width, curTile.height
+    );
   }
 
   render(ctx, camera) {

@@ -5,9 +5,7 @@
       "starty": 16,
       "width": 44,
       "height": 16,
-      "collisions": [
-        {"x": 12, "y": 46, "width": 28, "height": 14}
-      ]
+      "collision": {"x": 12, "y": 46, "width": 28, "height": 14}
     },
     "1": {
       "startx": 162,
@@ -42,7 +40,7 @@
   },
   "composites": {
     "houseone": {
-      "tiles": [[2, 0, 0], [3, 60, 152], [4, 17, 114], [5, 0, 152]]
+      "tiles": [[2, 0, 0], [3, 27, 77], [4, 0, 57], [5, 85, 57]]
     }
   }
 }

@@ -1,6 +1,13 @@
 class RpgGame {
-   constructor(canvas) {
+   constructor(canvas, flags) {
      this.context = canvas.getContext('2d');
+
+     /*
+       shouldRenderCollisions (debugging) -> render colliding bounding boxes as red rectangles
+     */
+     this.flags = flags;
+
+
      this.renderFn = () => { console.log("render function not defined"); }
      this.preloadFn = () => {};
      this.preRenderFn = () => {};
@@ -137,10 +144,6 @@ class RpgGame {
      }
    }
 
-   isBlocked(x, y) {
-     return this.map.isBlocked(x, y);
-   }
-
    addCollisionFn(conditionFn, collisionFn) {
      this.collisionFns.push({"conditionFn": conditionFn, "collisionFn": collisionFn});
    }
@@ -152,6 +155,17 @@ class RpgGame {
          collision.collisionFn(this);
        }
      }
+   }
+
+   hasCollisionDetected(bb) {
+     //let collision = this.map.isBlocked(bb);
+     let otherBb = this.map.blockingBox(bb);
+     if (this.flags.shouldRenderCollisions && otherBb) {
+       this.context.fillStyle = "rgb(255, 0, 0)";
+       this.context.fillRect(otherBb.x, otherBb.y, otherBb.width, otherBb.height);
+     }
+
+     return otherBb !== null;
    }
 
    startGameLoop() {
